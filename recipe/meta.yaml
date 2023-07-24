@@ -1,32 +1,35 @@
 {% set name = "elementpath" %}
 {% set version = "4.1.4" %}
-{% set sha256 = "f991c42ff66fa06e219141ccf65890261e6635b448e7d4c2d8b62dc5bf1de9e8" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: f991c42ff66fa06e219141ccf65890261e6635b448e7d4c2d8b62dc5bf1de9e8
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
-  noarch: python
+  skip: True  # [py<37]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
-    - python >=3.7
+    - python
     - pip
-
+    - setuptools
+    - wheel
   run:
-    - python >=3.7
+    - python
 
 test:
   imports:
     - elementpath
+  requires: 
+    - pip
+  commands: 
+    - pip check
 
 about:
   home: https://github.com/sissaschool/elementpath
@@ -44,6 +47,7 @@ about:
     XPath 1.0.
 
   dev_url: https://github.com/sissaschool/elementpath
+  doc_url: https://github.com/sissaschool/elementpath
 
 extra:
   recipe-maintainers:
