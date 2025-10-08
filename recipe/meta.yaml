@@ -22,13 +22,54 @@ requirements:
   run:
     - python
 
+# >           raise RuntimeError("input() already active")
+# E           RuntimeError: input() already active
+{% set deselect_tests = " --deselect=tests/test_package.py::PackageTest::test_missing_debug_statements" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_python_requirement" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_version_matching" %}
+
 test:
+  source_files:
+    - tests
   imports:
     - elementpath
+    - elementpath.aliases
+    - elementpath.collations
+    - elementpath.compare
+    - elementpath.datatypes
+    - elementpath.datatypes.atomic_types
+    - elementpath.datatypes.datetime
+    - elementpath.decoder
+    - elementpath.etree
+    - elementpath.exceptions
+    - elementpath.extras.pathnodes
+    - elementpath.helpers
+    - elementpath.namespaces
+    - elementpath.protocols
+    - elementpath.regex
+    - elementpath.regex.codepoints
+    - elementpath.schema_proxy
+    - elementpath.sequence_types
+    - elementpath.serialization
+    - elementpath.tdop
+    - elementpath.tree_builders
+    - elementpath.validators
+    - elementpath.xpath_context
+    - elementpath.xpath_nodes
+    - elementpath.xpath_tokens
+    - elementpath.xpath1
+    - elementpath.xpath2
+    - elementpath.xpath3
+    - elementpath.xpath30
+    - elementpath.xpath30.xpath30_helpers
+    - elementpath.xpath31  
   requires:
+    - pytest
     - pip
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests {{ deselect_tests }}
 
 about:
   home: https://github.com/sissaschool/elementpath
@@ -40,11 +81,9 @@ about:
     The proposal of this package is to provide XPath 1.0, 2.0 and 3.0
     selectors for ElementTree XML data structures, both for the standard
     ElementTree library and for the lxml.etree library.
-
-    For lxml.etree this package can be useful for providing XPath 2.0/3.0
+    For lxml.etree this package can be useful for providing XPath 2.0 3.0
     selectors, because lxml.etree already has it's own implementation of
     XPath 1.0.
-
   dev_url: https://github.com/sissaschool/elementpath
   doc_url: https://github.com/sissaschool/elementpath
 
