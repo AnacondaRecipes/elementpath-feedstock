@@ -1,13 +1,18 @@
 {% set name = "elementpath" %}
-{% set version = "5.0.4" %}
+{% set version = "5.1.2" %}
+{% set deselect_tests = " --deselect=tests/test_package.py::PackageTest::test_missing_debug_statements" %}
+{% set deselect_tests = 'deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_python_requirement"' %}
+{% set deselect_tests = 'deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_version_matching"' %}
 
+# >           raise RuntimeError("input() already active")
+# E           RuntimeError: input() already active
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 85ed93565d6e94aefa160b12f36b12cbe4be6bf9bbde06b80f2c5c94829a25fb
+  sha256: 43d67a38700153eb45349c6e14a4d4b3a06e390c31df06539f730a96baf9a7fc
 
 build:
   number: 0
@@ -21,12 +26,6 @@ requirements:
     - setuptools >=77.0
   run:
     - python
-
-# >           raise RuntimeError("input() already active")
-# E           RuntimeError: input() already active
-{% set deselect_tests = " --deselect=tests/test_package.py::PackageTest::test_missing_debug_statements" %}
-{% set deselect_tests = deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_python_requirement" %}
-{% set deselect_tests = deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_version_matching" %}
 
 test:
   source_files:
@@ -62,7 +61,7 @@ test:
     - elementpath.xpath3
     - elementpath.xpath30
     - elementpath.xpath30.xpath30_helpers
-    - elementpath.xpath31  
+    - elementpath.xpath31
   requires:
     - pytest
     - pip
