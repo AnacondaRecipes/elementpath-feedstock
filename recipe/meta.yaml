@@ -1,5 +1,5 @@
 {% set name = "elementpath" %}
-{% set version = "5.0.4" %}
+{% set version = "5.1.2" %}
 
 package:
   name: {{ name }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 85ed93565d6e94aefa160b12f36b12cbe4be6bf9bbde06b80f2c5c94829a25fb
+  sha256: 43d67a38700153eb45349c6e14a4d4b3a06e390c31df06539f730a96baf9a7fc
 
 build:
   number: 0
-  skip: true  # [py<39]
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
@@ -37,7 +37,6 @@ test:
     - elementpath.collations
     - elementpath.compare
     - elementpath.datatypes
-    - elementpath.datatypes.atomic_types
     - elementpath.datatypes.datetime
     - elementpath.decoder
     - elementpath.etree
@@ -62,7 +61,7 @@ test:
     - elementpath.xpath3
     - elementpath.xpath30
     - elementpath.xpath30.xpath30_helpers
-    - elementpath.xpath31  
+    - elementpath.xpath31
   requires:
     - pytest
     - pip
