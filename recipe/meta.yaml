@@ -1,11 +1,6 @@
 {% set name = "elementpath" %}
 {% set version = "5.1.2" %}
-{% set deselect_tests = " --deselect=tests/test_package.py::PackageTest::test_missing_debug_statements" %}
-{% set deselect_tests = 'deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_python_requirement"' %}
-{% set deselect_tests = 'deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_version_matching"' %}
 
-# >           raise RuntimeError("input() already active")
-# E           RuntimeError: input() already active
 package:
   name: {{ name }}
   version: {{ version }}
@@ -16,7 +11,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [py<39]
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
@@ -27,6 +22,12 @@ requirements:
   run:
     - python
 
+# >           raise RuntimeError("input() already active")
+# E           RuntimeError: input() already active
+{% set deselect_tests = " --deselect=tests/test_package.py::PackageTest::test_missing_debug_statements" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_python_requirement" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_package.py::PackageTest::test_version_matching" %}
+
 test:
   source_files:
     - tests
@@ -36,7 +37,6 @@ test:
     - elementpath.collations
     - elementpath.compare
     - elementpath.datatypes
-    - elementpath.datatypes.atomic_types
     - elementpath.datatypes.datetime
     - elementpath.decoder
     - elementpath.etree
